@@ -70,7 +70,16 @@ footer nav h4 {
 }
 
 p {
-  padding: 18px 0px;
+  padding: 8px 0px;
+}
+
+.lawyer ul {
+  list-style: disc;
+  padding-left: 24px;
+}
+
+#service ul li {
+  list-style-image: url('/images/arrow-list.png');
 }
 
 .modal-bg {

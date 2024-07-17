@@ -16,7 +16,7 @@ export default function Modal() {
     const data: { [key: string]: string } = {}
     for(let [key, value] of formData.entries()){
       data[key] = value as string;
-      console.log(data)
+      // console.log(data)
     }
   }
 

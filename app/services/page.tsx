@@ -5,6 +5,7 @@ interface Post {
   id: number;
   attributes: PostAttributes;
 }
+
 interface PostAttributes {
   name: string;
   slug: string;
@@ -19,7 +20,7 @@ export default async function Services() {
         className="h-56 lg:h-80 bg-center bg-cover flex items-end justify-start"
         style={{ backgroundImage: "url(/images/services.jpg)" }}
       >
-        <div className="mx-auto max-w-screen-2xl w-full px-4">
+        <div className="mx-auto max-w-screen-xl w-full px-4">
           <div className="flex flex-col gap-6 pb-6 lg:pb-12">
             <h4 className="font-bold text-white">PRACTICE AREAS</h4>
             <h1 className="text-5xl text-white spectral lg:text-6xl">
@@ -29,7 +30,7 @@ export default async function Services() {
         </div>
       </header>
       <main className="bg-white py-0 pb-12 lg:py-12 text-lg">
-        <div id="container" className="mx-auto max-w-screen-2xl w-full px-4">
+        <div id="container" className="mx-auto max-w-screen-xl w-full px-4">
           <section className="py-12">
             <p>
               A&ntilde;over A&ntilde;over San Diego & Primavera Law Offices has

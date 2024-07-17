@@ -48,7 +48,7 @@ export function InquiryBanner() {
   const { setState } = useContactModal();
   return (
     <section
-      className="min-h-96 h-full py-12 bg-center bg-cover text-center"
+      className="py-24 min-h-96 h-full bg-center bg-cover text-center"
       style={{
         backgroundImage: "url('/images/components/banner-bg.jpg')",
       }}

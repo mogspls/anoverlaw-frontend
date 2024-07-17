@@ -26,14 +26,14 @@ export default function Header() {
     { name: "Services", href: "/services" },
     { name: "Careers", href: "/careers" },
     {
-      name: "Team",
-      href: "/team",
+      name: "Lawyers",
+      href: "/lawyers",
       children: [
-        { name: "Partners", href: "/team/partners" },
-        { name: "Associates", href: "/team/associates" },
+        { name: "Partners", href: "/lawyers/partners" },
+        { name: "Associates", href: "/lawyers/associates" },
         {
           name: "Senior Counsel & Consultants",
-          href: "/team/senior-counsel-and-consultants",
+          href: "/lawyers/senior-counsel-and-consultants",
         },
       ],
     },
@@ -56,7 +56,7 @@ export default function Header() {
   return (
     <>
       <div className="bg-[#0e1114]">
-        <div className="flex justify-end w-full max-w-screen-2xl mx-auto text-black">
+        <div className="flex justify-end w-full max-w-screen-xl mx-auto text-black">
           <div className="p-2 flex gap-4">
             <div className="flex gap-2">
               <button
@@ -82,8 +82,11 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <header id="main-header" className="sticky top-0 bg-[#0c0E11]/75 z-10 backdrop-blur-[4px]">
-        <div className="max-w-screen-2xl mx-auto p-2 flex justify-between items-center">
+      <header
+        id="main-header"
+        className="sticky top-0 bg-[#0c0E11]/75 z-10 backdrop-blur-[4px]"
+      >
+        <div className="max-w-screen-xl mx-auto p-2 flex justify-between items-center">
           <div id="logo" className="flex items-center gap-4">
             <a
               href="/"

@@ -12,7 +12,7 @@ export default function Footer() {
   return (
     <>
       <footer id="main-footer" className="before:content-[''] before:block before:h-3 before:bg-[#2D3036] before:w-full bg-[#0c0E11]">
-        <div className="max-w-screen-2xl mx-auto w-full">
+        <div className="max-w-screen-xl mx-auto w-full">
           <section className="before:content-[''] before:flex before:w-full before:h-[1px] before:bg-[#9BA3B7] after:content-[''] after:flex after:w-full after:h-[1px] after:bg-[#9BA3B7] flex items-center justify-center w-full px-4 py-4">
             <img
               src="/images/AASP.svg"
@@ -87,16 +87,13 @@ export default function Footer() {
                 <h4>THE FIRM</h4>
                 <ul className="flex flex-col gap-3">
                   <li>
-                    <a href="/team/founders">Founders</a>
+                    <a href="/lawyers/partners">Partners</a>
                   </li>
                   <li>
-                    <a href="/team/partners">Partners</a>
+                    <a href="/lawyers/associates">Associates</a>
                   </li>
                   <li>
-                    <a href="/team/associates">Associates</a>
-                  </li>
-                  <li>
-                    <a href="/team/senior-counsel-and-consultants">
+                    <a href="/lawyers/senior-counsel-and-consultants">
                       Senior Counsel and Consultants
                     </a>
                   </li>
