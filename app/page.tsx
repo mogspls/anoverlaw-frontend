@@ -61,7 +61,7 @@ export default async function Home() {
               education, health and energy.
             </p>
             <div className="flex">
-              <a href="/team" className="px-12 py-4 bg-[#1B387D] text-white">
+              <a href="/lawyers" className="px-12 py-4 bg-[#1B387D] text-white">
                 MEET THE TEAM
               </a>
             </div>
@@ -111,8 +111,8 @@ export default async function Home() {
           <h4 className="spectral before:content-[''] before:flex before:w-full before:h-[1px] before:bg-[#000] after:content-[''] after:flex after:w-full after:h-[1px] after:bg-[#000] flex items-center justify-center w-full px-4 pb-12 text-[#000] text-4xl">
             <span className="px-12">Publications</span>
           </h4>
-          <div className="grid grid-cols-3 gap-12 mx-auto max-w-screen-xl px-4">
-            {posts.data.slice(0, 2).map((post: Post, index: number) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mx-auto max-w-screen-xl px-4">
+            {posts.data.slice(0, 3).map((post: Post, index: number) => {
               return (
                 <article className="flex flex-col gap-4" key={index}>
                   <a href={`/blog/${post.attributes.slug}`}>
