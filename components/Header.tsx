@@ -24,7 +24,7 @@ export default function Header() {
   const nav: NavTypes[] = [
     { name: "About", href: "/about" },
     { name: "Services", href: "/services" },
-    { name: "Careers", href: "/careers" },
+    // { name: "Careers", href: "/careers" },
     {
       name: "Lawyers",
       href: "/lawyers",
@@ -180,9 +180,8 @@ export default function Header() {
                 <li className="relative border-y">
                   <a
                     href="/"
-                    className={`px-4 py-2 hover:bg-gray-500 duration-75 rounded-sm flex justify-between gap-4 text-black ${
-                      isActive("/") ? "bg-gray-500 text-white" : ""
-                    }`}
+                    className={`px-4 py-2 hover:bg-gray-500 duration-75 rounded-sm flex justify-between gap-4 text-black 
+                    `}
                   >
                     HOME
                   </a>
@@ -191,9 +190,7 @@ export default function Header() {
                   <li key={index} className="relative border-y">
                     <a
                       href={item.href}
-                      className={`px-4 py-2 hover:bg-gray-500 duration-75 rounded-sm flex justify-between gap-4 text-black ${
-                        isActive(item.href) ? "bg-gray-500 text-white" : ""
-                      }`}
+                      className={`px-4 py-2 hover:bg-gray-500 duration-75 rounded-sm flex justify-between gap-4 text-black`}
                     >
                       {item.name}
                       {/* {item.children && (
@@ -217,11 +214,7 @@ export default function Header() {
                             </svg>
                             <a
                               href={subItem.href}
-                              className={`px-4 py-2 hover:bg-gray-500 duration-75 rounded-sm flex justify-between gap-4 text-black w-full ${
-                                isActive(item.href)
-                                  ? "bg-gray-500 text-white"
-                                  : ""
-                              }`}
+                              className={`px-4 py-2 hover:bg-gray-500 duration-75 rounded-sm flex justify-between gap-4 text-black w-full`}
                             >
                               {subItem.name}
                             </a>

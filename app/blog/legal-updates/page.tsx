@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Publications — Añover Añover San Diego & Primavera Law Offices",
+  title: "Legal Updates — Añover Añover San Diego & Primavera Law Offices",
   description:
     "We are law practitioners with a collective experience spanning over 75 years, acquired from esteemed law firms, multinational conglomerates, respected corporations, and government offices. Our extensive experience, energy, and dynamism provide a steadfast assurance that we offer transparent, personalized, and cost-efficient services to our clients.",
 };
@@ -17,6 +17,13 @@ export default async function CommunityProjects() {
     notFound();
   }
 
+  const data = response.filter((blogpost: any) => {
+    const positionSlug = blogpost?.attributes.category?.data?.attributes.slug;
+    return positionSlug === "legal-updates";
+  });
+
+  // console.log(data);
+
   return (
     <>
       <header
@@ -27,7 +34,7 @@ export default async function CommunityProjects() {
           <div className="flex flex-col gap-6 pb-6 lg:pb-12">
             <h4 className="font-bold text-white">PUBLICATIONS</h4>
             <h1 className="text-5xl text-white spectral lg:text-6xl">
-              Latest Articles
+              Legal Updates
             </h1>
           </div>
         </div>
@@ -35,7 +42,7 @@ export default async function CommunityProjects() {
       <main className="bg-white">
         <div className="mx-auto max-w-screen-xl w-full px-4 ">
           <div className="py-12 grid-cols-1 sm:grid-cols-2 gap-12 md:grid-cols-3 grid ">
-            {response.map((post: any, index: number) => {
+            {data.map((post: any, index: number) => {
               return (
                 <article className="flex flex-col gap-4" key={index}>
                   <a href={`/blog/${post.attributes.slug}`}>
@@ -43,7 +50,7 @@ export default async function CommunityProjects() {
                       className="h-60 bg-center bg-cover"
                       style={{
                         backgroundImage: post.attributes.banner
-                          ? `url(${post.attributes.banner?.data.attributes.url})`
+                          ? `url(${post.attributes.banner?.data?.attributes?.url})`
                           : `url('/images/components/banner-bg.jpg')`,
                       }}
                     ></div>
@@ -51,10 +58,10 @@ export default async function CommunityProjects() {
                   <section className="flex flex-col gap-2">
                     <div>
                       <a
-                        href={`/blog/${post.attributes.category?.data?.attributes.slug}`}
+                        href={`/blog/${post.attributes.category.data.attributes.slug}`}
                         className="hover:underline uppercase"
                       >
-                        {post.attributes.category.data?.attributes.title}
+                        {post.attributes.category.data.attributes.title}
                       </a>
                     </div>
                     <div>
@@ -77,6 +84,7 @@ export default async function CommunityProjects() {
           </div>
         </div>
       </main>
+      <InquiryBanner/>
     </>
   );
 }

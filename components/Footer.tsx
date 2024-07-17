@@ -79,8 +79,11 @@ export default function Footer() {
                     <a href="/services">Services</a>
                   </li>
                   <li>
-                    <a href="/careers">Careers</a>
+                    <a href="/blog">Publications</a>
                   </li>
+                  {/* <li>
+                    <a href="/careers">Careers</a>
+                  </li> */}
                 </ul>
               </nav>
               <nav className="flex flex-col gap-8" style={{ flex: "0.3" }}>

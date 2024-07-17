@@ -1,7 +1,9 @@
 const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`;
 export const fetchData = async (api: string): Promise<any> => {
   try {
-    const response = await fetch(`${BASE_URL}${api}`);
+    const response = await fetch(`${BASE_URL}${api}`, {
+      next: { revalidate: 10 },
+    });
 
     if (!response.ok) {
       throw new Error(response.statusText);

@@ -99,8 +99,14 @@ export default async function LawyerPage({
                   className="object-cover aspect-[9/12] object-top w-full"
                 />
               </div>
-              <header className="border-b border-black flex flex-col gap-2">
-                <div className="p-6 px-4 md:px-0">
+              <header className="flex flex-col gap-2">
+                <div
+                  className={`p-6 px-4 md:px-0 after:block after:bottom-0 ${
+                    data.attributes.description
+                      ? "after:absolute relative md:after:hidden after:contents-[''] after:h-[2px] after:w-12 after:bg-black"
+                      : ""
+                  }`}
+                >
                   <h4 className="uppercase text-lg md:text-lg font-bold">
                     {data.attributes.position.data.attributes.title}
                   </h4>
@@ -120,7 +126,7 @@ export default async function LawyerPage({
           <main className="w-full pt-4 px-4 md:px-12 md:pt-0">
             <section>
               {data.attributes.description && (
-                <Markdown className="text-lg py-0 md:pb-6">
+                <Markdown className="text-lg py-0 pb-6 ">
                   {data.attributes.description}
                 </Markdown>
               )}

@@ -40,8 +40,7 @@ interface BannerAttributes {
 }
 
 export default async function Home() {
-  const posts = await fetchData("/blogposts?populate=*");
-  // console.log(posts)
+  const posts = await fetchData(`/blogposts?populate=*&pagination[pageSize]=100`);
   return (
     <main>
       <section
@@ -116,14 +115,12 @@ export default async function Home() {
             {posts.data.slice(0, 2).map((post: Post, index: number) => {
               return (
                 <article className="flex flex-col gap-4" key={index}>
-                  <a
-                    href={`/blog/${post.attributes.category.data.attributes.slug}/${post.attributes.slug}`}
-                  >
+                  <a href={`/blog/${post.attributes.slug}`}>
                     <div
                       className="h-60 bg-center bg-cover"
                       style={{
                         backgroundImage: post.attributes.banner
-                          ? `url(${post.attributes.banner?.data.attributes.url})`
+                          ? `url(${post.attributes.banner?.data?.attributes?.url})`
                           : `url('/images/components/banner-bg.jpg')`,
                       }}
                     ></div>
@@ -139,7 +136,7 @@ export default async function Home() {
                     </div>
                     <div>
                       <a
-                        href={`/blog/${post.attributes.category.data.attributes.slug}/${post.attributes.slug}`}
+                        href={`/blog/${post.attributes.slug}`}
                         className="hover:underline"
                       >
                         <h1 className="spectral text-4xl text-[#1B387D]">
