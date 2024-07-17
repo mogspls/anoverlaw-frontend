@@ -11,11 +11,11 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="before:content-[''] before:block before:h-2 before:bg-[#2D3036] before:w-full bg-[#0c0E11]">
+      <footer id="main-footer" className="before:content-[''] before:block before:h-3 before:bg-[#2D3036] before:w-full bg-[#0c0E11]">
         <div className="max-w-screen-2xl mx-auto w-full">
           <section className="before:content-[''] before:flex before:w-full before:h-[1px] before:bg-[#9BA3B7] after:content-[''] after:flex after:w-full after:h-[1px] after:bg-[#9BA3B7] flex items-center justify-center w-full px-4 py-4">
             <img
-              src="./images/AASP.svg"
+              src="/images/AASP.svg"
               alt="AASP Seal"
               className="py-0 px-6 select-none"
             />
@@ -37,7 +37,7 @@ export default function Footer() {
                       <a
                         href="https://maps.app.goo.gl/A7RGE4UBRakpePbH9"
                         target="_blank"
-                        className="inline-block w-full text-[#535965] text-sm hover:underline"
+                        className="inline-block w-full text-[#6c7075] font-light text-sm hover:underline"
                       >
                         Suites 401, 1001, 1003, & 1005,{" "}
                         <br className="hidden md:inline" />

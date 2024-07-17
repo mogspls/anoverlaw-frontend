@@ -1,4 +1,4 @@
-const BASE_URL = `${process.env.NEXT_STRAPI_BACKEND_URL}/api`;
+const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`;
 export const fetchData = async (api: string): Promise<any> => {
   try {
     const response = await fetch(`${BASE_URL}${api}`);

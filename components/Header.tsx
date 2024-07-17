@@ -32,7 +32,7 @@ export default function Header() {
         { name: "Partners", href: "/team/partners" },
         { name: "Associates", href: "/team/associates" },
         {
-          name: "Senior Counsel & Counsel",
+          name: "Senior Counsel & Consultants",
           href: "/team/senior-counsel-and-consultants",
         },
       ],
@@ -82,7 +82,7 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <header className="sticky top-0 bg-[#0c0E11] z-10 mix-blend-normal">
+      <header id="main-header" className="sticky top-0 bg-[#0c0E11]/75 z-10 backdrop-blur-[4px]">
         <div className="max-w-screen-2xl mx-auto p-2 flex justify-between items-center">
           <div id="logo" className="flex items-center gap-4">
             <a
@@ -92,7 +92,7 @@ export default function Header() {
               <img
                 src="/images/AASP-logo-white.svg"
                 alt="Anover Anover San Diego Primavera Law Offices"
-                className="h-14 select-none mix-blend-difference"
+                className="h-14 select-none"
               />
             </a>
           </div>
@@ -102,8 +102,8 @@ export default function Header() {
                 <li key={index}>
                   <a
                     href={item.href}
-                    className={`px-4 py-2 hover:bg-gray-500 duration-75 rounded-sm flex justify-between gap-4 ${
-                      isActive(item.href) ? "bg-gray-500" : ""
+                    className={`px-4 py-2 hover:bg-black duration-75 rounded-sm flex justify-between gap-4 ${
+                      isActive(item.href) ? "bg-black" : ""
                     }`}
                   >
                     {item.name}
@@ -112,12 +112,12 @@ export default function Header() {
                     )}
                   </a>
                   {item.children && (
-                    <ul className="bg-gray-900 text-white rounded-b-md absolute">
+                    <ul className="bg-white text-black rounded-b-md absolute">
                       {item.children.map((subItem, subIndex) => (
                         <li key={subIndex}>
                           <a
                             href={subItem.href}
-                            className="px-4 py-2 hover:bg-gray-500 duration-75 rounded-sm w-full block"
+                            className="px-4 py-2 hover:bg-black duration-75 rounded-sm w-full block text-black hover:text-white"
                           >
                             {subItem.name}
                           </a>
