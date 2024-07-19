@@ -31,7 +31,8 @@ interface LawyerAttributes {
 }
 
 export const metadata: Metadata = {
-  title: "Senior Counsel and Consultants — Añover Añover San Diego & Primavera Law Offices",
+  title:
+    "Senior Counsel and Consultants — Añover Añover San Diego & Primavera Law Offices",
   description:
     "We are law practitioners with a collective experience spanning over 75 years, acquired from esteemed law firms, multinational conglomerates, respected corporations, and government offices. Our extensive experience, energy, and dynamism provide a steadfast assurance that we offer transparent, personalized, and cost-efficient services to our clients.",
 };
@@ -103,8 +104,17 @@ export default async function Lawyers() {
                           "founding-partner"
                             ? "partners"
                             : lawyer.attributes.position.data.attributes
+                                .slug === "partner"
+                            ? "partners"
+                            : lawyer.attributes.position.data.attributes
                                 .slug === "senior-associates"
                             ? "associates"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "associate"
+                            ? "associates"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "consultants"
+                            ? "senior-counsel-and-consultants"
                             : lawyer.attributes.position.data.attributes
                                 .slug === "consultant"
                             ? "senior-counsel-and-consultants"

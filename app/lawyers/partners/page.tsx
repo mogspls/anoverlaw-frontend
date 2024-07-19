@@ -105,8 +105,17 @@ export default async function Lawyers() {
                           "founding-partner"
                             ? "partners"
                             : lawyer.attributes.position.data.attributes
+                                .slug === "partner"
+                            ? "partners"
+                            : lawyer.attributes.position.data.attributes
                                 .slug === "senior-associates"
                             ? "associates"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "associate"
+                            ? "associates"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "consultants"
+                            ? "senior-counsel-and-consultants"
                             : lawyer.attributes.position.data.attributes
                                 .slug === "consultant"
                             ? "senior-counsel-and-consultants"
