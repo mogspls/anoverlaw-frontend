@@ -55,7 +55,7 @@ export default function About() {
         />
         <div className="mx-auto max-w-screen-md py-4 md:py-12 px-4 bg-white">
           <p>
-            The Firm's clientele not only consists of private individuals but
+            The Firm&quot;s clientele not only consists of private individuals but
             also of businesses ranging from startups to multinational companies
             and cuts across different industries such as, but not limited to,
             manufacturing, export, manpower, technology, education, health and

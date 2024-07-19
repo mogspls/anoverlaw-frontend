@@ -101,7 +101,7 @@ export default async function Home() {
       </section>
       <Banner
         subtitle="OUR SERVICES"
-        title="&ldquo;A&ntilde;over A&ntilde;over San Diego &amp; Primavera Law Offices has grown into a full services firm built on its commitment to provide competent legal services to its client-partners&rdquo;"
+        title="&ldquo;A&ntilde;over A&ntilde;over San Diego &amp; Primavera Law Offices has grown into a full service firm built on its commitment to provide competent legal services to its client-partners&rdquo;"
         anchor="OUR SERVICES"
         href="/services"
         backgroundImage="/images/components/banner-bg.jpg"
