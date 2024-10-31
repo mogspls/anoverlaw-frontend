@@ -103,11 +103,11 @@ export default async function PracticeArea({
           <section>
             <Markdown>{post?.attributes.description}</Markdown>
           </section>
+          <h1 className="spectral sc text-3xl before:h-1 before:contents-[''] before:bg-black before:block before:-translate-y-4 pt-12 before:w-12">
+            Lawyers Specializing in {post?.attributes.name}
+          </h1>
           {post?.attributes.lawyers.data.length !== 0 ? (
             <>
-              <h1 className="spectral sc text-3xl before:h-1 before:contents-[''] before:bg-black before:block before:-translate-y-4 pt-12 before:w-12">
-                Lawyers Specializing in {post?.attributes.name}
-              </h1>
               <ul className="grid grid-cols-2 lg:grid-cols-2 p-4 py-12 gap-12">
                 {post?.attributes.lawyers.data.map(
                   (lawyer: LawyerAttributes, key: number) => {
