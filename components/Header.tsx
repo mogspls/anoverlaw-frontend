@@ -38,7 +38,7 @@ export default function Header() {
       ],
     },
     {
-      name: "Publications",
+      name: "News and Updates",
       href: "/blog",
       children: [
         {
@@ -60,14 +60,14 @@ export default function Header() {
           <div className="p-2 flex gap-4">
             <div className="flex gap-2">
               <button
-                className="p-2 py-0 bg-white/90 hover:bg-white border border-[#e7e3df1a] transition duration-100 hover:bg-white/75 rounded-xl  flex items-center gap-2 text-[#000] text-xs w-full font-semibold"
+                className="p-2 py-0 bg-white/90 hover:bg-white border border-[#e7e3df1a] transition duration-100 hover:bg-white/75 rounded-xl  flex items-center gap-2 text-[#000] text-xs w-full font-semibold h-10"
                 onClick={() => setState(!state)}
               >
                 <Phone fill={"#000"} />
                 Contact Us
               </button>
             </div>
-            <div>
+            {/* <div>
               <button
                 className="p-2 bg-[rgba(29, 33, 38, 0.4)] border border-[#e7e3df1a] transition duration-75 hover:bg-white/5 rounded-xl flex items-center gap-2 text-[#B6BEC9] text-xs font-light"
                 style={{
@@ -78,7 +78,7 @@ export default function Header() {
               >
                 <Search fill={"#fff"} />
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

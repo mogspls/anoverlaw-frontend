@@ -110,7 +110,7 @@ export default async function Lawyers() {
                     <img
                       src={`${lawyer.attributes.profile_picture.data.attributes.url}`}
                       alt={lawyer.attributes.name}
-                      className="flex object-cover object-top aspect-[9/12]"
+                      className="flex object-cover object-top aspect-[8/12]"
                     />
                   </a>
                   <div className="py-4">

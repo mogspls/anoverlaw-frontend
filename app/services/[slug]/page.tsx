@@ -98,12 +98,12 @@ export default async function PracticeArea({
           </div>
         </div>
       </header>
-      <main id="service" className="bg-white py-0 pb-12 lg:py-12 text-lg">
+      <main id="service" className="bg-white py-12 lg:py-12 text-lg">
         <div id="container" className="mx-auto max-w-screen-xl w-full px-4">
           <section>
             <Markdown>{post?.attributes.description}</Markdown>
           </section>
-          <h1 className="spectral sc text-3xl before:h-1 before:contents-[''] before:bg-black before:block before:-translate-y-4 pt-12 before:w-12">
+          {/* <h1 className="spectral sc text-3xl before:h-1 before:contents-[''] before:bg-black before:block before:-translate-y-4 pt-12 before:w-12">
             Lawyers Specializing in {post?.attributes.name}
           </h1>
           {post?.attributes.lawyers.data.length !== 0 ? (
@@ -129,7 +129,7 @@ export default async function PracticeArea({
             </>
           ) : (
             <div>No one seems to be handling this. Kindly check back!</div>
-          )}
+          )} */}
         </div>
       </main>
       <InquiryBanner />
