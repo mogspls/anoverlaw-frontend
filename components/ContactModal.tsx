@@ -16,7 +16,7 @@ export default function Modal() {
     const data: { [key: string]: string } = {}
     for(let [key, value] of formData.entries()){
       data[key] = value as string;
-      // console.log(data)
+      console.log(data)
     }
   }
 
@@ -118,6 +118,7 @@ export default function Modal() {
                   className="bg-slate-600/10 p-3"
                   placeholder={"Juan Dela Cruz"}
                   required={true}
+                  disabled
                 />
               </fieldset>
               <fieldset className="flex flex-col gap-2">
@@ -131,6 +132,7 @@ export default function Modal() {
                   name="email"
                   className="bg-slate-600/10 p-3"
                   placeholder={"juan.delacruz@example.com"}
+                  disabled
                 />
               </fieldset>
               <fieldset className="flex flex-col gap-2">
@@ -141,6 +143,7 @@ export default function Modal() {
                   name="phone"
                   className="bg-slate-600/10 p-3"
                   placeholder={"(+63) 912 345 6789"}
+                  disabled
                 />
               </fieldset>
               <fieldset className="flex flex-col gap-2">
@@ -150,13 +153,15 @@ export default function Modal() {
                   name="message"
                   className="bg-slate-600/10 p-3 h-32 resize-none block w-full"
                   placeholder="I'd like to talk about..."
+                  disabled
                 />
               </fieldset>
               <button
-                type="submit"
-                className="w-full rounded-lg text-white bg-[#1B387D] py-4"
+                type="button"
+                disabled
+                className="w-full rounded-lg text-white bg-[#1B387D] py-4 disabled:bg-slate-300"
               >
-                Send
+                Under construction
               </button>
             </form>
           </div>
