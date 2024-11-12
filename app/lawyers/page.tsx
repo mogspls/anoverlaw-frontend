@@ -55,23 +55,43 @@ export default async function Lawyers() {
     "senior-counsel",
   ];
 
-  const data = response.sort((a: any, b: any) => {
-    const posA = positionOrder.indexOf(
-      a.attributes.position.data.attributes.slug
-    );
-    const posB = positionOrder.indexOf(
-      b.attributes.position.data.attributes.slug
-    );
-
-    if (posA === posB) {
-      return (
-        new Date(a.attributes.createdAt).getTime() -
-        new Date(b.attributes.createdAt).getTime()
-      );
-    }
-
-    return posA - posB;
+  const FoundingPartner = response.filter((lawyer: any) => {
+    const positionSlug = lawyer.attributes.position?.data?.attributes?.slug;
+    return positionSlug === "founding-partner";
   });
+
+  const Partner = response.filter((lawyer: any) => {
+    const positionSlug = lawyer.attributes.position?.data?.attributes?.slug;
+    return positionSlug === "partner";
+  });
+
+  const SeniorAssociates = response.filter((lawyer: any) => {
+    const positionSlug = lawyer.attributes.position?.data?.attributes?.slug;
+    return positionSlug === "senior-associates";
+  });
+
+  const Associates = response.filter((lawyer: any) => {
+    const positionSlug = lawyer.attributes.position?.data?.attributes?.slug;
+    return positionSlug === "associates";
+  });
+
+  // const data = response.sort((a: any, b: any) => {
+  //   const posA = positionOrder.indexOf(
+  //     a.attributes.position.data.attributes.slug
+  //   );
+  //   const posB = positionOrder.indexOf(
+  //     b.attributes.position.data.attributes.slug
+  //   );
+
+  //   if (posA === posB) {
+  //     return (
+  //       new Date(a.attributes.createdAt).getTime() -
+  //       new Date(b.attributes.createdAt).getTime()
+  //     );
+  //   }
+
+  //   return posA - posB;
+  // });
 
   // console.log(data);
 
@@ -92,7 +112,7 @@ export default async function Lawyers() {
       </header>
       <main className="bg-white">
         <div className="mx-auto max-w-screen-xl w-full px-4">
-          <section className="py-12">
+          <section className="py-4">
             <p>
               We are law practitioners with a collective experience spanning
               over 75 years, acquired from esteemed law firms, multinational
@@ -102,8 +122,197 @@ export default async function Lawyers() {
               cost-efficient services to our clients.
             </p>
           </section>
+          <div className="pt-12">
+            <h1 className="text-3xl spectral lg:text-3xl after:contents-[''] after:block after:h-1 after:bg-black after:translate-y-4 after:w-4 after:text-center uppercase">
+              Founding Partners
+            </h1>
+          </div>
+          <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12 pt-12 pb-12">
+            {FoundingPartner.map((lawyer: Lawyer, index: number) => {
+              return (
+                <div key={index}>
+                  <a href={`/lawyers/${lawyer.attributes.slug}`}>
+                    <img
+                      src={`${lawyer.attributes.profile_picture.data.attributes.url}`}
+                      alt={lawyer.attributes.name}
+                      className="flex object-cover object-top aspect-[8/12]"
+                    />
+                  </a>
+                  <div className="py-4">
+                    <h4 className="font-bold">
+                      <a
+                        href={`/lawyers/${
+                          lawyer.attributes.position.data.attributes.slug ===
+                          "founding-partner"
+                            ? "partners"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "partner"
+                            ? "partners"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "senior-associates"
+                            ? "associates"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "associate"
+                            ? "associates"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "consultants"
+                            ? "senior-counsel-and-consultants"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "consultant"
+                            ? "senior-counsel-and-consultants"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "senior-counsel"
+                            ? "senior-counsel-and-consultants"
+                            : lawyer.attributes.position.data.attributes.slug
+                        }`}
+                        className="font-bold uppercase text-xs hover:underline"
+                      >
+                        {lawyer.attributes.position.data.attributes.title}
+                      </a>
+                    </h4>
+                    <h1 className="spectral sc text-2xl">
+                      <a
+                        href={`/lawyers/${lawyer.attributes.slug}`}
+                        className="hover:underline"
+                      >
+                        {lawyer.attributes.name}
+                      </a>
+                    </h1>
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+          <div className="pt-12">
+            <h1 className="text-3xl spectral lg:text-3xl after:contents-[''] after:block after:h-1 after:bg-black after:translate-y-4 after:w-4 after:text-center uppercase">
+              Partners
+            </h1>
+          </div>
+          <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12 pt-12 pb-12">
+            {Partner.map((lawyer: Lawyer, index: number) => {
+              return (
+                <div key={index}>
+                  <a href={`/lawyers/${lawyer.attributes.slug}`}>
+                    <img
+                      src={`${lawyer.attributes.profile_picture.data.attributes.url}`}
+                      alt={lawyer.attributes.name}
+                      className="flex object-cover object-top aspect-[8/12]"
+                    />
+                  </a>
+                  <div className="py-4">
+                    <h4 className="font-bold">
+                      <a
+                        href={`/lawyers/${
+                          lawyer.attributes.position.data.attributes.slug ===
+                          "founding-partner"
+                            ? "partners"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "partner"
+                            ? "partners"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "senior-associates"
+                            ? "associates"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "associate"
+                            ? "associates"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "consultants"
+                            ? "senior-counsel-and-consultants"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "consultant"
+                            ? "senior-counsel-and-consultants"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "senior-counsel"
+                            ? "senior-counsel-and-consultants"
+                            : lawyer.attributes.position.data.attributes.slug
+                        }`}
+                        className="font-bold uppercase text-xs hover:underline"
+                      >
+                        {lawyer.attributes.position.data.attributes.title}
+                      </a>
+                    </h4>
+                    <h1 className="spectral sc text-2xl">
+                      <a
+                        href={`/lawyers/${lawyer.attributes.slug}`}
+                        className="hover:underline"
+                      >
+                        {lawyer.attributes.name}
+                      </a>
+                    </h1>
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+          <div className="pt-12">
+            <h1 className="text-3xl spectral lg:text-3xl after:contents-[''] after:block after:h-1 after:bg-black after:translate-y-4 after:w-4 after:text-center uppercase">
+              Senior Associates
+            </h1>
+          </div>
+          <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12 pt-12 pb-12">
+            {SeniorAssociates.map((lawyer: Lawyer, index: number) => {
+              return (
+                <div key={index}>
+                  <a href={`/lawyers/${lawyer.attributes.slug}`}>
+                    <img
+                      src={`${lawyer.attributes.profile_picture.data.attributes.url}`}
+                      alt={lawyer.attributes.name}
+                      className="flex object-cover object-top aspect-[8/12]"
+                    />
+                  </a>
+                  <div className="py-4">
+                    <h4 className="font-bold">
+                      <a
+                        href={`/lawyers/${
+                          lawyer.attributes.position.data.attributes.slug ===
+                          "founding-partner"
+                            ? "partners"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "partner"
+                            ? "partners"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "senior-associates"
+                            ? "associates"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "associate"
+                            ? "associates"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "consultants"
+                            ? "senior-counsel-and-consultants"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "consultant"
+                            ? "senior-counsel-and-consultants"
+                            : lawyer.attributes.position.data.attributes
+                                .slug === "senior-counsel"
+                            ? "senior-counsel-and-consultants"
+                            : lawyer.attributes.position.data.attributes.slug
+                        }`}
+                        className="font-bold uppercase text-xs hover:underline"
+                      >
+                        {lawyer.attributes.position.data.attributes.title}
+                      </a>
+                    </h4>
+                    <h1 className="spectral sc text-2xl">
+                      <a
+                        href={`/lawyers/${lawyer.attributes.slug}`}
+                        className="hover:underline"
+                      >
+                        {lawyer.attributes.name}
+                      </a>
+                    </h1>
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+
+          <div className="pt-12">
+            <h1 className="text-3xl spectral lg:text-3xl after:contents-[''] after:block after:h-1 after:bg-black after:translate-y-4 after:w-4 after:text-center uppercase">
+              Associates
+            </h1>
+          </div>
           <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12 pt-12 pb-56">
-            {data.map((lawyer: Lawyer, index: number) => {
+            {Associates.map((lawyer: Lawyer, index: number) => {
               return (
                 <div key={index}>
                   <a href={`/lawyers/${lawyer.attributes.slug}`}>
@@ -160,7 +369,7 @@ export default async function Lawyers() {
           </section>
         </div>
       </main>
-      <InquiryBanner/>
+      <InquiryBanner />
     </>
   );
 }
