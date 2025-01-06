@@ -60,7 +60,7 @@ export default async function Home() {
               also of businesses ranging from startups to multinational
               companies and cuts across different industries such as, but not
               limited to, manufacturing, export, manpower, technology,
-              education, health and e nergy.
+              education, health and energy.
             </p>
             <div className="flex">
               <a href="/lawyers" className="px-12 py-4 bg-[#1B387D] text-white">
