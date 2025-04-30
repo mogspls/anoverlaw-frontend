@@ -91,11 +91,17 @@ export default async function Lawyers() {
               return (
                 <div key={index}>
                   <a href={`/lawyers/${lawyer.attributes.slug}`}>
-                    <img
+                    {/* <img
                       src={`${lawyer.attributes.profile_picture.data.attributes.url}`}
                       alt={lawyer.attributes.name}
                       className="flex object-cover object-top aspect-[9/12]"
-                    />
+                    /> */}
+                    <div
+                      className="aspect-[8/12] object-cover object-top flex bg-cover bg-center bg-top"
+                      style={{
+                        backgroundImage: `url(${lawyer.attributes.profile_picture.data.attributes.url})`,
+                      }}
+                    ></div>
                   </a>
                   <div className="py-4">
                     <h4 className="font-bold">
