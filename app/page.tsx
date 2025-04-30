@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Banner from "@/components/Banner";
 import { fetchData } from "@/hooks/strapi-fetch";
+import Markdown from "react-markdown";
 
 export const metadata: Metadata = {
   title: "Home — Añover Añover San Diego & Primavera Law Offices",
@@ -41,7 +42,7 @@ interface BannerAttributes {
 
 export default async function Home() {
   const posts = await fetchData(
-    `/blogposts?populate=*&pagination[pageSize]=100`
+    `/blogposts?populate=*&pagination[pageSize]=100&sort=createdAt:desc`
   );
   return (
     <main>
@@ -144,14 +145,19 @@ export default async function Home() {
                               href={`/blog/${post.attributes.slug}`}
                               className="hover:underline"
                             >
-                              <h1 className="spectral text-4xl text-[#1B387D]">
+                              <h1 className="spectral text-xl text-[#1B387D]">
                                 {post.attributes.title}
                               </h1>
                             </a>
                           </div>
-                          <p className="py-1">
-                            {post.attributes.body.substring(0, 150)}...
-                          </p>
+                          {/* <article className="bg-white blog-post">
+                            <div className="max-w-screen-md mx-auto w-full text-xl">
+                              <Markdown
+                                className="text-slate-800 px-0 m-0"
+                                children={post.attributes.body.substring(0, 150) + '...'}
+                              />
+                            </div>
+                          </article> */}
                         </section>
                       </article>
                     );

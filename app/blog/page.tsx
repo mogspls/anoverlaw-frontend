@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CommunityProjects() {
-  const req = await fetchData(`/blogposts?populate=*&pagination[pageSize]=100`);
+  const req = await fetchData(`/blogposts?populate=*&pagination[pageSize]=100&sort=createdAt:desc`);
   const response = await req.data;
 
   // if (req?.meta.pagination.total == 0) {
@@ -63,7 +63,7 @@ export default async function CommunityProjects() {
                           href={`/blog/${post.attributes.slug}`}
                           className="hover:underline"
                         >
-                          <h1 className="spectral text-4xl text-[#1B387D]">
+                          <h1 className="spectral text-xl text-[#1B387D]">
                             {post.attributes.title}
                           </h1>
                         </a>

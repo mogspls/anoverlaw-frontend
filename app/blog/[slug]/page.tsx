@@ -65,7 +65,7 @@ export default async function blogpost({
       </header>
       <article className="bg-white blog-post">
         <div className="max-w-screen-md py-12 mx-auto w-full text-xl">
-          <Markdown className="prose">{post.attributes.body}</Markdown>
+          <Markdown className="text-slate-800 leading-10">{post.attributes.body}</Markdown>
         </div>
       </article>
       <InquiryBanner/>

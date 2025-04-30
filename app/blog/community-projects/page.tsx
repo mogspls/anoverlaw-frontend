@@ -70,7 +70,7 @@ export default async function CommunityProjects() {
                           href={`/blog/${post.attributes.slug}`}
                           className="hover:underline"
                         >
-                          <h1 className="spectral text-4xl text-[#1B387D]">
+                          <h1 className="spectral text-xl text-[#1B387D]">
                             {post.attributes.title}
                           </h1>
                         </a>

@@ -98,7 +98,7 @@ export default async function Lawyers() {
   return (
     <>
       <header
-        className="h-56 lg:h-80 bg-center bg-cover flex items-end justify-start"
+        className="h-56 lg:h-80 bg-center bg-cover bg-center bg-top flex items-end justify-start"
         style={{ backgroundImage: "url(/images/services.jpg)" }}
       >
         <div className="mx-auto max-w-screen-xl w-full px-4">
@@ -131,12 +131,21 @@ export default async function Lawyers() {
             {FoundingPartner.map((lawyer: Lawyer, index: number) => {
               return (
                 <div key={index}>
-                  <a href={`/lawyers/${lawyer.attributes.slug}`}>
-                    <img
-                      src={`${lawyer.attributes.profile_picture.data.attributes.url}`}
-                      alt={lawyer.attributes.name}
-                      className="flex object-cover object-top aspect-[8/12]"
-                    />
+                  <a
+                    href={`/lawyers/${lawyer.attributes.slug}`}
+                    className="aspect-[8/12]"
+                  >
+                    {/* <img
+                        src={`${lawyer.attributes.profile_picture.data.attributes.url}`}
+                        alt={lawyer.attributes.name}
+                        className="flex object-fill object-top aspect-[8/12]"
+                      /> */}
+                    <div
+                      className="aspect-[8/12] object-cover object-top flex bg-cover bg-center-top"
+                      style={{
+                        backgroundImage: `url(${lawyer.attributes.profile_picture.data.attributes.url})`,
+                      }}
+                    ></div>
                   </a>
                   <div className="py-4">
                     <h4 className="font-bold">
@@ -192,12 +201,21 @@ export default async function Lawyers() {
             {Partner.map((lawyer: Lawyer, index: number) => {
               return (
                 <div key={index}>
-                  <a href={`/lawyers/${lawyer.attributes.slug}`}>
-                    <img
+                  <a
+                    href={`/lawyers/${lawyer.attributes.slug}`}
+                    className="aspect-[8/12]"
+                  >
+                    {/* <img
                       src={`${lawyer.attributes.profile_picture.data.attributes.url}`}
                       alt={lawyer.attributes.name}
-                      className="flex object-cover object-top aspect-[8/12]"
-                    />
+                      className="flex object-fill object-top aspect-[8/12]"
+                    /> */}
+                    <div
+                      className="aspect-[8/12] object-cover object-top flex bg-cover bg-center bg-top"
+                      style={{
+                        backgroundImage: `url(${lawyer.attributes.profile_picture.data.attributes.url})`,
+                      }}
+                    ></div>
                   </a>
                   <div className="py-4">
                     <h4 className="font-bold">
@@ -253,12 +271,21 @@ export default async function Lawyers() {
             {SeniorAssociates.map((lawyer: Lawyer, index: number) => {
               return (
                 <div key={index}>
-                  <a href={`/lawyers/${lawyer.attributes.slug}`}>
-                    <img
+                  <a
+                    href={`/lawyers/${lawyer.attributes.slug}`}
+                    className="aspect-[8/12]"
+                  >
+                    {/* <img
                       src={`${lawyer.attributes.profile_picture.data.attributes.url}`}
                       alt={lawyer.attributes.name}
-                      className="flex object-cover object-top aspect-[8/12]"
-                    />
+                      className="flex object-fill object-top aspect-[8/12]"
+                    /> */}
+                    <div
+                      className="aspect-[8/12] object-cover object-top flex bg-cover bg-center bg-top"
+                      style={{
+                        backgroundImage: `url(${lawyer.attributes.profile_picture.data.attributes.url})`,
+                      }}
+                    ></div>
                   </a>
                   <div className="py-4">
                     <h4 className="font-bold">
