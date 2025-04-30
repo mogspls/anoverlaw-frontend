@@ -84,8 +84,13 @@ p {
 .blog-post p {
   padding: 12px 24px;
 }
+#service p {
+  line-height: 2em;
+}
 #service ul li {
-  list-style-image: url('/images/arrow-list.png');
+  list-style: disc;
+  margin-left: 2.5em;
+  padding: 0.4em 0px;
 }
 
 .modal-bg {

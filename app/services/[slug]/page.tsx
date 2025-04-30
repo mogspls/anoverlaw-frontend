@@ -14,28 +14,28 @@ const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
 //   lawyers?: LawyerAttributes;
 // }
 
-interface LawyerAttributes {
-  attributes: {
-    name: string;
-    slug: string;
-    profile_picture: {
-      data: {
-        attributes: {
-          url: string;
-          name: string;
-        };
-      };
-    };
-    position: {
-      data: {
-        attributes: {
-          slug: string;
-          title: string;
-        };
-      };
-    };
-  };
-}
+// interface LawyerAttributes {
+//   attributes: {
+//     name: string;
+//     slug: string;
+//     profile_picture: {
+//       data: {
+//         attributes: {
+//           url: string;
+//           name: string;
+//         };
+//       };
+//     };
+//     position: {
+//       data: {
+//         attributes: {
+//           slug: string;
+//           title: string;
+//         };
+//       };
+//     };
+//   };
+// }
 
 type Props = {
   params: { slug: string };
@@ -89,7 +89,7 @@ export default async function PracticeArea({
         className="h-72 lg:h-80 bg-center bg-cover flex items-end justify-start"
         style={{ backgroundImage: "url(/images/services.jpg)" }}
       >
-        <div className="mx-auto max-w-screen-xl w-full px-4">
+        <div className="mx-auto max-w-screen-lg w-full px-4">
           <div className="flex flex-col gap-6 pb-6 lg:pb-12">
             <h4 className="font-bold text-white">SERVICES</h4>
             <h1 className="text-5xl text-white spectral lg:text-6xl">
@@ -99,7 +99,7 @@ export default async function PracticeArea({
         </div>
       </header>
       <main id="service" className="bg-white py-12 lg:py-12 text-lg">
-        <div id="container" className="mx-auto max-w-screen-xl w-full px-4">
+        <div id="container" className="mx-auto max-w-screen-lg w-full px-4">
           <section>
             <Markdown>{post?.attributes.description}</Markdown>
           </section>
