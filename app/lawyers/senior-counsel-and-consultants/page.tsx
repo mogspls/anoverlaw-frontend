@@ -38,19 +38,27 @@ export const metadata: Metadata = {
 };
 
 export default async function Lawyers() {
-  const req = await fetchData(
-    `/lawyers?populate=position,profile_picture&pagination[pageSize]=100`
-  );
-  const response = await req.data;
+  let req: any;
 
-  if (req?.meta.pagination.total == 0) {
+  try {
+    req = await fetchData(
+      `/lawyers?populate=position,profile_picture&pagination[pageSize]=100`,
+    );
+  } catch (err) {
+    console.error("STRAPI_FETCH_FAILED(associates)", err);
     notFound();
   }
 
-  const data = response.sort(
+  // Guard for empty / undefined
+  if (!req?.data?.length || req?.meta?.pagination?.total === 0) {
+    notFound();
+  }
+
+  // req is already the Strapi response shape: { data, meta }
+  const data = [...req.data].sort(
     (a: any, b: any) =>
       new Date(a.attributes.createdAt).getTime() -
-      new Date(b.attributes.createdAt).getTime()
+      new Date(b.attributes.createdAt).getTime(),
   );
 
   const filteredLawyers = data.filter((lawyer: any) => {
@@ -110,24 +118,26 @@ export default async function Lawyers() {
                           "founding-partner"
                             ? "partners"
                             : lawyer.attributes.position.data.attributes
-                                .slug === "partner"
-                            ? "partners"
-                            : lawyer.attributes.position.data.attributes
-                                .slug === "senior-associates"
-                            ? "associates"
-                            : lawyer.attributes.position.data.attributes
-                                .slug === "associate"
-                            ? "associates"
-                            : lawyer.attributes.position.data.attributes
-                                .slug === "consultants"
-                            ? "senior-counsel-and-consultants"
-                            : lawyer.attributes.position.data.attributes
-                                .slug === "consultant"
-                            ? "senior-counsel-and-consultants"
-                            : lawyer.attributes.position.data.attributes
-                                .slug === "senior-counsel"
-                            ? "senior-counsel-and-consultants"
-                            : lawyer.attributes.position.data.attributes.slug
+                                  .slug === "partner"
+                              ? "partners"
+                              : lawyer.attributes.position.data.attributes
+                                    .slug === "senior-associates"
+                                ? "associates"
+                                : lawyer.attributes.position.data.attributes
+                                      .slug === "associate"
+                                  ? "associates"
+                                  : lawyer.attributes.position.data.attributes
+                                        .slug === "consultants"
+                                    ? "senior-counsel-and-consultants"
+                                    : lawyer.attributes.position.data.attributes
+                                          .slug === "consultant"
+                                      ? "senior-counsel-and-consultants"
+                                      : lawyer.attributes.position.data
+                                            .attributes.slug ===
+                                          "senior-counsel"
+                                        ? "senior-counsel-and-consultants"
+                                        : lawyer.attributes.position.data
+                                            .attributes.slug
                         }`}
                         className="font-bold uppercase text-xs hover:underline"
                       >

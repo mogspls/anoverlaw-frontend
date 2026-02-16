@@ -5,70 +5,59 @@ import { InquiryBanner } from "@/components/Banner";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
 
-// interface PracticeAreaAttributes {
-//   name?: string;
-//   slug?: string;
-//   description?: string;
-//   createdAt?: string;
-//   updatedAt?: string;
-//   lawyers?: LawyerAttributes;
-// }
-
-// interface LawyerAttributes {
-//   attributes: {
-//     name: string;
-//     slug: string;
-//     profile_picture: {
-//       data: {
-//         attributes: {
-//           url: string;
-//           name: string;
-//         };
-//       };
-//     };
-//     position: {
-//       data: {
-//         attributes: {
-//           slug: string;
-//           title: string;
-//         };
-//       };
-//     };
-//   };
-// }
-
 type Props = {
   params: { slug: string };
   searchParams?: { [key: string]: string | string[] };
 };
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: Props): Promise<Metadata> {
-  const response = await fetch(
-    `${BASE_URL}/api/practice-areas?filters[slug][$eq]=${params.slug}`
-  ).then((res) => res.json());
+// small helper: logs HTML preview if Strapi returns non-JSON (403/HTML/WAF/etc)
+async function fetchStrapiJson(url: string, label: string) {
+  const res = await fetch(url, { next: { revalidate: 0 } });
 
-  const title = response.data[0].attributes.name;
-  const description = response.data[0].attributes.description;
+  const ct = res.headers.get("content-type") || "";
+  if (!res.ok || !ct.includes("application/json")) {
+    const body = await res.text();
+    console.log(`STRAPI_NON_JSON(${label})`, {
+      url,
+      status: res.status,
+      ct,
+      bodyPreview: body.slice(0, 300),
+    });
+    throw new Error(`Strapi returned non-JSON (${res.status})`);
+  }
 
-  return {
-    title: `Services | ${title} | Añover Añover San Diego & Primavera Law Offices`,
-    description: `${description}`,
-  };
+  return res.json();
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const url = `${BASE_URL}/api/practice-areas?filters[slug][$eq]=${encodeURIComponent(
+    params.slug
+  )}`;
+
+  try {
+    const response = await fetchStrapiJson(url, "services:generateMetadata");
+
+    const title = response?.data?.[0]?.attributes?.name ?? "Services";
+    const description = response?.data?.[0]?.attributes?.description ?? "";
+
+    return {
+      title: `Services | ${title} | Añover Añover San Diego & Primavera Law Offices`,
+      description,
+    };
+  } catch {
+    return {
+      title: "Services | Añover Añover San Diego & Primavera Law Offices",
+      robots: { index: false },
+    };
+  }
 }
 
 async function getPostBySlug(slug: string) {
-  const res = await fetch(
-    `${BASE_URL}/api/practice-areas?filters[slug][$eq]=${slug}&populate[lawyers][populate]=*`,
-    {
-      next: {
-        revalidate: 0,
-      },
-    }
-  );
-  return res.json();
+  const url = `${BASE_URL}/api/practice-areas?filters[slug][$eq]=${encodeURIComponent(
+    slug
+  )}&populate[lawyers][populate]=*`;
+
+  return fetchStrapiJson(url, "services:getPostBySlug");
 }
 
 export default async function PracticeArea({
@@ -78,7 +67,7 @@ export default async function PracticeArea({
 }) {
   const response = await getPostBySlug(params.slug);
 
-  if (response?.meta.pagination.total == 0) {
+  if (!response?.data?.length || response?.meta?.pagination?.total === 0) {
     notFound();
   }
   const post = response.data[0];

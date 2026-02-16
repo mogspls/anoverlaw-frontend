@@ -37,16 +37,24 @@ export const metadata: Metadata = {
 };
 
 export default async function Lawyers() {
-  const req = await fetchData(
-    `/lawyers?populate=position,profile_picture&pagination[pageSize]=100`
-  );
-  const response = await req.data;
+  let req: any;
 
-  if (req?.meta.pagination.total == 0) {
+  try {
+    req = await fetchData(
+      `/lawyers?populate=position,profile_picture&pagination[pageSize]=100`
+    );
+  } catch (err) {
+    console.error("STRAPI_FETCH_FAILED(associates)", err);
     notFound();
   }
 
-  const data = response.sort(
+  // Guard for empty / undefined
+  if (!req?.data?.length || req?.meta?.pagination?.total === 0) {
+    notFound();
+  }
+
+  // req is already the Strapi response shape: { data, meta }
+  const data = [...req.data].sort(
     (a: any, b: any) =>
       new Date(a.attributes.createdAt).getTime() -
       new Date(b.attributes.createdAt).getTime()
@@ -57,7 +65,6 @@ export default async function Lawyers() {
     return positionSlug === "founding-partner" || positionSlug === "partner";
   });
 
-  // console.log(data);
 
   return (
     <>

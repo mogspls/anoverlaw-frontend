@@ -37,16 +37,24 @@ export const metadata: Metadata = {
 };
 
 export default async function Lawyers() {
-  const req = await fetchData(
-    `/lawyers?populate=position,profile_picture&pagination[pageSize]=100`
-  );
-  const response = await req.data;
+  let req: any;
 
-  if (req?.meta.pagination.total == 0) {
+  try {
+    req = await fetchData(
+      `/lawyers?populate=position,profile_picture&pagination[pageSize]=100`
+    );
+  } catch (err) {
+    console.error("STRAPI_FETCH_FAILED(associates)", err);
     notFound();
   }
 
-  const data = response.sort(
+  // Guard for empty / undefined
+  if (!req?.data?.length || req?.meta?.pagination?.total === 0) {
+    notFound();
+  }
+
+  // req is already the Strapi response shape: { data, meta }
+  const data = [...req.data].sort(
     (a: any, b: any) =>
       new Date(a.attributes.createdAt).getTime() -
       new Date(b.attributes.createdAt).getTime()
@@ -54,12 +62,8 @@ export default async function Lawyers() {
 
   const filteredLawyers = data.filter((lawyer: any) => {
     const positionSlug = lawyer.attributes.position?.data?.attributes?.slug;
-    return (
-      positionSlug === "associates" || positionSlug === "senior-associates"
-    );
+    return positionSlug === "associates" || positionSlug === "senior-associates";
   });
-
-  // console.log(data);
 
   return (
     <>
@@ -76,29 +80,14 @@ export default async function Lawyers() {
           </div>
         </div>
       </header>
+
       <main className="bg-white">
         <div className="mx-auto max-w-screen-xl w-full px-4">
-          {/* <section className="py-12">
-            <p>
-              We are law practitioners with a collective experience spanning
-              over 75 years, acquired from esteemed law firms, multinational
-              conglomerates, respected corporations, and government offices. Our
-              extensive experience, energy, and dynamism provide a steadfast
-              assurance that we offer transparent, personalized, and
-              cost-efficient services to our clients.
-            </p>
-          </section> */}
           <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12 pt-12 pb-56">
             {filteredLawyers.map((lawyer: Lawyer, index: number) => {
               return (
                 <div key={index}>
                   <a href={`/lawyers/${lawyer.attributes.slug}`}>
-                    {/* <img
-                      src={`${lawyer.attributes.profile_picture.data.attributes.url}`}
-                      alt={lawyer.attributes.name}
-                      className="flex object-cover object-top aspect-[9/12]"
-                    /> */}
-
                     <div
                       className="aspect-[8/12] object-cover object-top flex bg-cover bg-center bg-top"
                       style={{
@@ -106,6 +95,7 @@ export default async function Lawyers() {
                       }}
                     ></div>
                   </a>
+
                   <div className="py-4">
                     <h4 className="font-bold">
                       <a
@@ -113,23 +103,23 @@ export default async function Lawyers() {
                           lawyer.attributes.position.data.attributes.slug ===
                           "founding-partner"
                             ? "partners"
-                            : lawyer.attributes.position.data.attributes
-                                .slug === "partner"
+                            : lawyer.attributes.position.data.attributes.slug ===
+                              "partner"
                             ? "partners"
-                            : lawyer.attributes.position.data.attributes
-                                .slug === "senior-associates"
+                            : lawyer.attributes.position.data.attributes.slug ===
+                              "senior-associates"
                             ? "associates"
-                            : lawyer.attributes.position.data.attributes
-                                .slug === "associate"
+                            : lawyer.attributes.position.data.attributes.slug ===
+                              "associate"
                             ? "associates"
-                            : lawyer.attributes.position.data.attributes
-                                .slug === "consultants"
+                            : lawyer.attributes.position.data.attributes.slug ===
+                              "consultants"
                             ? "senior-counsel-and-consultants"
-                            : lawyer.attributes.position.data.attributes
-                                .slug === "consultant"
+                            : lawyer.attributes.position.data.attributes.slug ===
+                              "consultant"
                             ? "senior-counsel-and-consultants"
-                            : lawyer.attributes.position.data.attributes
-                                .slug === "senior-counsel"
+                            : lawyer.attributes.position.data.attributes.slug ===
+                              "senior-counsel"
                             ? "senior-counsel-and-consultants"
                             : lawyer.attributes.position.data.attributes.slug
                         }`}
@@ -138,6 +128,7 @@ export default async function Lawyers() {
                         {lawyer.attributes.position.data.attributes.title}
                       </a>
                     </h4>
+
                     <h1 className="spectral sc text-2xl">
                       <a
                         href={`/lawyers/${lawyer.attributes.slug}`}
@@ -153,6 +144,7 @@ export default async function Lawyers() {
           </section>
         </div>
       </main>
+
       <InquiryBanner />
     </>
   );

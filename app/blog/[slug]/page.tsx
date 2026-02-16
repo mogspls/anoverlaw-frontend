@@ -9,30 +9,57 @@ type Props = {
 };
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
-async function getPostBySlug(slug: string) {
-  const res = await fetch(
-    `${BASE_URL}/api/blogposts?filters[slug][$eq]=${slug}&populate=*`,
-    {
-      next: {
-        revalidate: 0,
-      },
-    }
-  );
+
+// small helper: logs HTML preview if Strapi returns non-JSON (403/HTML/WAF/etc)
+async function fetchStrapiJson(url: string, label: string) {
+  const res = await fetch(url, { next: { revalidate: 0 } });
+
+  const ct = res.headers.get("content-type") || "";
+  if (!res.ok || !ct.includes("application/json")) {
+    const body = await res.text();
+    console.log(`STRAPI_NON_JSON(${label})`, {
+      url,
+      status: res.status,
+      ct,
+      bodyPreview: body.slice(0, 300),
+    });
+    throw new Error(`Strapi returned non-JSON (${res.status})`);
+  }
+
   return res.json();
 }
 
+async function getPostBySlug(slug: string) {
+  const url = `${BASE_URL}/api/blogposts?filters[slug][$eq]=${encodeURIComponent(
+    slug
+  )}&populate=*`;
+  return fetchStrapiJson(url, "blog:getPostBySlug");
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const response = await fetch(
-    `${BASE_URL}/api/blogposts?filters[slug][$eq]=${params.slug}&populate=category`
-  ).then((res) => res.json());
+  const url = `${BASE_URL}/api/blogposts?filters[slug][$eq]=${encodeURIComponent(
+    params.slug
+  )}&populate=category`;
 
-  const title = response.data[0]?.attributes.title;
-  const description = response.data[0]?.attributes.description;
+  try {
+    const response = await fetchStrapiJson(url, "blog:generateMetadata");
 
-  return {
-    title: `${title} | ${response.data[0]?.attributes.category?.data.attributes.title} | Añover Añover San Diego & Primavera Law Offices`,
-    description: `${description}`,
-  };
+    const title = response?.data?.[0]?.attributes?.title ?? "Blog";
+    const description = response?.data?.[0]?.attributes?.description ?? "";
+    const categoryTitle =
+      response?.data?.[0]?.attributes?.category?.data?.attributes?.title ?? "";
+
+    return {
+      title: `${title} | ${categoryTitle} | Añover Añover San Diego & Primavera Law Offices`,
+      description,
+    };
+  } catch {
+    // don't crash the route just because metadata couldn't be fetched
+    return {
+      title: "Blog | Añover Añover San Diego & Primavera Law Offices",
+      robots: { index: false },
+    };
+  }
 }
 
 export default async function blogpost({
@@ -65,10 +92,12 @@ export default async function blogpost({
       </header>
       <article className="bg-white blog-post">
         <div className="max-w-screen-md py-12 mx-auto w-full text-xl">
-          <Markdown className="text-slate-800 leading-10">{post.attributes.body}</Markdown>
+          <Markdown className="text-slate-800 leading-10">
+            {post.attributes.body}
+          </Markdown>
         </div>
       </article>
-      <InquiryBanner/>
+      <InquiryBanner />
     </>
   );
 }

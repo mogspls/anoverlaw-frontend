@@ -38,14 +38,20 @@ interface LawyerAttributes {
 const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
 
 async function getPostBySlug(slug: string) {
-  const res = await fetch(
-    `${BASE_URL}/api/lawyers?filters[slug][$eq]=${slug}&populate=*`,
-    {
-      next: {
-        revalidate: 0,
-      },
-    }
-  );
+  const url = `${BASE_URL}/api/lawyers?filters[slug][$eq]=${slug}&populate=*`;
+  const res = await fetch(url, { next: { revalidate: 0 } });
+
+  const ct = res.headers.get("content-type") || "";
+  if (!res.ok || !ct.includes("application/json")) {
+    const body = await res.text();
+    console.log("STRAPI_NON_JSON", {
+      status: res.status,
+      ct,
+      body: body.slice(0, 300),
+    });
+    throw new Error(`Strapi returned non-JSON (${res.status})`);
+  }
+
   return res.json();
 }
 
@@ -54,21 +60,49 @@ type Props = {
   searchParams?: { [key: string]: string | string[] };
 };
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: Props): Promise<Metadata> {
-  const response = await fetch(
-    `${BASE_URL}/api/lawyers?filters[slug][$eq]=${params.slug}&populate=*`
-  ).then((res) => res.json());
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const url = `${BASE_URL}/api/lawyers?filters[slug][$eq]=${encodeURIComponent(
+    params.slug,
+  )}&populate=*`;
 
-  const title = response.data[0].attributes.name;
-  const description = response.data[0].attributes.description;
-  const position = response.data[0].attributes.position.data.attributes.title;
+  const res = await fetch(url, { next: { revalidate: 0 } });
+
+  const ct = res.headers.get("content-type") || "";
+  if (!res.ok || !ct.includes("application/json")) {
+    const body = await res.text();
+    console.log("STRAPI_NON_JSON(generateMetadata)", {
+      url,
+      status: res.status,
+      contentType: ct,
+      bodyPreview: body.slice(0, 300),
+    });
+
+    // Don’t crash the whole route just because metadata fetch failed
+    return {
+      title: "Lawyer | Añover Añover San Diego & Primavera Law Offices",
+      robots: { index: false },
+    };
+  }
+
+  const response = await res.json();
+  const item = response?.data?.[0];
+
+  // Guard: if no data, don't crash metadata generation
+  if (!item) {
+    return {
+      title:
+        "Lawyer not found | Añover Añover San Diego & Primavera Law Offices",
+      robots: { index: false },
+    };
+  }
+
+  const title = item.attributes?.name ?? "Lawyer";
+  const description = item.attributes?.description ?? "";
+  const position = item.attributes?.position?.data?.attributes?.title ?? "";
 
   return {
     title: `${title} — ${position} | Añover Añover San Diego & Primavera Law Offices`,
-    description: `${description}`,
+    description,
   };
 }
 
@@ -78,13 +112,12 @@ export default async function LawyerPage({
   params: { slug: string };
 }) {
   const response = await getPostBySlug(params.slug);
-  const data = response.data[0];
 
-  if (response?.meta.pagination.total == 0) {
+  if (!response?.data?.length || response?.meta?.pagination?.total === 0) {
     notFound();
   }
 
-  // console.log(data.attributes);
+  const data = response.data[0];
 
   return (
     <>
@@ -176,7 +209,7 @@ export default async function LawyerPage({
                             {practiceArea.attributes.name}
                           </a>
                         </li>
-                      )
+                      ),
                     )}
                   </ul>
                 </div>
