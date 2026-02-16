@@ -1,25 +1,43 @@
 const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`;
+
+const EMPTY = {
+  data: [],
+  meta: { pagination: { total: 0 } },
+};
+
 export const fetchData = async (api: string): Promise<any> => {
+  const url = `${BASE_URL}${api}`;
+
   try {
-    const response = await fetch(`${BASE_URL}${api}`, {
-      next: { revalidate: 10 },
-    });
+    const response = await fetch(url, { next: { revalidate: 10 } });
+
+    const ct = response.headers.get("content-type") || "";
+    const raw = await response.text(); // read ONCE
 
     if (!response.ok) {
-      throw new Error(response.statusText);
+      console.error("STRAPI_NOT_OK(fetchData)", {
+        url,
+        status: response.status,
+        statusText: response.statusText,
+        ct,
+        bodyPreview: raw.slice(0, 300),
+      });
+      return EMPTY;
     }
 
-    const contentType = response.headers.get("content-type");
-
-    if (contentType && contentType.includes("application/json")) {
-      const data = await response.json();
-      return data as any[];
-    } else {
-      const text = await response.text();
-      console.error(`Non JSON response received: ${text}`);
-      throw new Error("Received non-JSON response");
+    if (!ct.includes("application/json")) {
+      console.error("STRAPI_NON_JSON(fetchData)", {
+        url,
+        status: response.status,
+        ct,
+        bodyPreview: raw.slice(0, 300),
+      });
+      return EMPTY;
     }
+
+    return JSON.parse(raw);
   } catch (error) {
-    console.error(`Error fetching articles: ${error}`);
+    console.error("STRAPI_FETCH_FAILED(fetchData)", { url, error: String(error) });
+    return EMPTY;
   }
 };
