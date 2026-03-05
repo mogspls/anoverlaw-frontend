@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "We are law practitioners with a collective experience spanning over 75 years, acquired from esteemed law firms, multinational conglomerates, respected corporations, and government offices. Our extensive experience, energy, and dynamism provide a steadfast assurance that we offer transparent, personalized, and cost-efficient services to our clients.",
 };
 
-export default async function CommunityProjects() {
+export default async function LegalUpdates() {
   const req = await fetchData(`/blogposts?populate=*&pagination[pageSize]=100`);
   const response = await req.data;
 

@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 export default async function Lawyers() {
   const req = await fetchData(
-    `/lawyers?populate=position,profile_picture&pagination[pageSize]=100`,
+    `/lawyers?populate[0]=position&populate[1]=profile_picture&pagination[pageSize]=100`,
   );
 
   if (!req?.data?.length || req?.meta?.pagination?.total === 0) {

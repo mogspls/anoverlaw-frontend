@@ -1,102 +1,113 @@
 import Markdown from "react-markdown";
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { InquiryBanner } from "@/components/Banner";
+import { fetchData } from "@/hooks/strapi-fetch";
 
 type Props = {
   params: { slug: string };
   searchParams?: { [key: string]: string | string[] };
 };
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
+function unwrap<T extends Record<string, any>>(entity: any): T {
+  return (entity?.attributes ?? entity) as T;
+}
 
-// small helper: logs HTML preview if Strapi returns non-JSON (403/HTML/WAF/etc)
-async function fetchStrapiJson(url: string, label: string) {
-  const res = await fetch(url, { next: { revalidate: 0 } });
+function unwrapRel(rel: any): any | null {
+  if (!rel) return null;
+  if (rel?.data) return unwrap(rel.data);
+  return unwrap(rel);
+}
 
-  const ct = res.headers.get("content-type") || "";
-  if (!res.ok || !ct.includes("application/json")) {
-    const body = await res.text();
-    console.log(`STRAPI_NON_JSON(${label})`, {
-      url,
-      status: res.status,
-      ct,
-      bodyPreview: body.slice(0, 300),
-    });
-    throw new Error(`Strapi returned non-JSON (${res.status})`);
-  }
+function mediaUrl(media: any): string | null {
+  const v4 = media?.data?.attributes?.url;
+  if (typeof v4 === "string" && v4.length) return v4;
 
-  return res.json();
+  const v5a = media?.url;
+  if (typeof v5a === "string" && v5a.length) return v5a;
+
+  const v5b = media?.data?.url;
+  if (typeof v5b === "string" && v5b.length) return v5b;
+
+  return null;
 }
 
 async function getPostBySlug(slug: string) {
-  const url = `${BASE_URL}/api/blogposts?filters[slug][$eq]=${encodeURIComponent(
-    slug
-  )}&populate=*`;
-  return fetchStrapiJson(url, "blog:getPostBySlug");
+  return fetchData(
+    `/blogposts?filters[slug][$eq]=${encodeURIComponent(
+      slug
+    )}&populate[0]=category&populate[1]=banner`
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const url = `${BASE_URL}/api/blogposts?filters[slug][$eq]=${encodeURIComponent(
-    params.slug
-  )}&populate=category`;
+  const res = await fetchData(
+    `/blogposts?filters[slug][$eq]=${encodeURIComponent(
+      params.slug
+    )}&populate[0]=category`
+  );
 
-  try {
-    const response = await fetchStrapiJson(url, "blog:generateMetadata");
-
-    const title = response?.data?.[0]?.attributes?.title ?? "Blog";
-    const description = response?.data?.[0]?.attributes?.description ?? "";
-    const categoryTitle =
-      response?.data?.[0]?.attributes?.category?.data?.attributes?.title ?? "";
-
-    return {
-      title: `${title} | ${categoryTitle} | Añover Añover San Diego & Primavera Law Offices`,
-      description,
-    };
-  } catch {
-    // don't crash the route just because metadata couldn't be fetched
+  const first = res?.data?.[0];
+  if (!first) {
     return {
       title: "Blog | Añover Añover San Diego & Primavera Law Offices",
       robots: { index: false },
     };
   }
+
+  const post = unwrap<any>(first);
+  const category = unwrapRel(post.category);
+
+  const title = post?.title ?? "Blog";
+  const description = post?.description ?? "";
+  const categoryTitle = category?.title ?? "";
+
+  return {
+    title: `${title}${categoryTitle ? ` | ${categoryTitle}` : ""} | Añover Añover San Diego & Primavera Law Offices`,
+    description,
+  };
 }
 
-export default async function blogpost({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const response = await getPostBySlug(params.slug);
 
-  if (response?.meta.pagination.total == 0) {
-    notFound();
-  }
+  const first = response?.data?.[0];
+  if (!first) notFound();
 
-  const post = response.data[0];
+  const post = unwrap<any>(first);
+  const category = unwrapRel(post.category);
+
+  const banner = post.banner;
+  const bannerSrc = mediaUrl(banner);
 
   return (
     <>
       <header className="flex flex-col gap-8 pt-12 bg-white">
         <h6 className="text-center opensans font-bold text-black after:contents-[''] after:block after:h-1 after:bg-black after:translate-y-4 after:w-4 after:text-center flex items-center flex-col text-sm lg:text-lg uppercase">
-          {post.attributes.category.data.attributes.title}
+          {category?.title ?? "Blog"}
         </h6>
+
         <h1 className="spectral sc text-black text-4xl lg:text-5xl w-full max-w-screen-sm text-center mx-auto leading-none">
-          {post.attributes.title}
+          {post.title}
         </h1>
-        <img
-          src={post.attributes.banner.data.attributes.url}
-          alt={post.attributes.title}
-          className="w-full h-96 md:h-auto md:aspect-[2.5/1] object-cover"
-        />
+
+        {bannerSrc ? (
+          <img
+            src={bannerSrc}
+            alt={post.title ?? "Blog post"}
+            className="w-full h-96 md:h-auto md:aspect-[2.5/1] object-cover"
+          />
+        ) : null}
       </header>
+
       <article className="bg-white blog-post">
         <div className="max-w-screen-md py-12 mx-auto w-full text-xl">
-          <Markdown className="text-slate-800 leading-10">
-            {post.attributes.body}
+          <Markdown className="text-slate-800 leading-10 [&>ul]:list-disc [&>ul]:ml-12 [&>ul]:py-12 [&>a]:!underline [&>a]:!text-[#1B387D]">
+            {post.body ?? ""}
           </Markdown>
         </div>
       </article>
+
       <InquiryBanner />
     </>
   );

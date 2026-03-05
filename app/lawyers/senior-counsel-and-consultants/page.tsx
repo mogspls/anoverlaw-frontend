@@ -42,7 +42,7 @@ export default async function Lawyers() {
 
   try {
     req = await fetchData(
-      `/lawyers?populate=position,profile_picture&pagination[pageSize]=100`,
+      `/lawyers?populate[0]=position&populate[1]=profile_picture&pagination[pageSize]=100`,
     );
   } catch (err) {
     console.error("STRAPI_FETCH_FAILED(associates)", err);
